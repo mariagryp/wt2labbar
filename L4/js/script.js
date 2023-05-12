@@ -45,6 +45,7 @@ function init() {
 	startGameBtn.addEventListener("click", startGame);
 	checkAnswersBtn.addEventListener("click", checkAnswers);
 
+	//kod för händelsehanterare för att visa små/stora bilder
 	for (let i = 0; i < imgElems.length; i++) {
 		imgElems[i].addEventListener("mouseenter", showLargeImg);
 		imgElems[i].addEventListener("mouseleave", hideLargeImg);
