@@ -23,66 +23,82 @@ function init() {
 	startGameBtn = document.getElementById("startGameBtn");
 	checkAnswersBtn = document.getElementById("checkAnswersBtn");
 	msgElem = document.getElementById("message");
-	
+
+	wordListElem = document.getElementById("wordList").getElementsByTagName("ul")[0];//referens till den enda ul-lista. Indexeras med [0]
+
+	//referens till alla li-elelemts.Ingen index
+	wordElems = document.getElementById("wordList").getElementsByTagName("li");
+
+	//referens till img-elementen i imgList
+	imgElems = document.getElementById("imgList").getElementsByTagName("img");
+
+	//referens för p-element för användarens svar
+	answerElems = document.getElementsByClassName("userAnswer");
+
+	//referens för p-element för rätt svar
+	correctElems = document.getElementsByClassName("correctAnswer");
+
+	//referens till den stora bilden
+	largeImgElem = document.getElementById("largeImg");
 
 	// Lägg på händelsehanterare
 	startGameBtn.addEventListener("click", startGame);
 	checkAnswersBtn.addEventListener("click", checkAnswers);
-	
-	
+
+
 	// Aktivera/inaktivera knappar
-	
+
 } // Slut init
 window.addEventListener("load", init); // Se till att init aktiveras då sidan är inladdad
 // --------------------------------------------------
 // Initiera spelet. Välj ord slumpmässigt. Visa ord och bilder.
 function startGame() {
 	console.log("startGame");
-	
+
 } // Slut startGame
 // --------------------------------------------------
 // Visa förstorad bild
 function showLargeImg() {
 	console.log("showLargeImg");
-	
+
 } // Slut showLargeImg
 // --------------------------------------------------
 // Ta bort förstorad bild
 function hideLargeImg() {
 	console.log("hideLargeImg");
-	
+
 } // Slut hideLargeImg
 // --------------------------------------------------
 // Kontrollera användarens svar och visa de korrekta svaren
 function checkAnswers() {
 	console.log("checkAnswers");
-	
+
 } // Slut checkAnswers
 // --------------------------------------------------
 // Spara referens till elementet som dras. Lägg på händelsehanterare för drop zones.
 function dragstartWord() {
-	
+
 } // Slut dragstartWord
 // --------------------------------------------------
 // Ta bort händelsehanterare för drop zones.
 function dragendWord() {
-	
+
 } // Slut dragendWord
 // --------------------------------------------------
 // Hantera händelserna dragover och drop, då ett ord släpps över en bild
 // För dragover utförs endast första raden med preventDefault.
 function wordOverImg(e) { // e är Event-objektet
-	
+
 } // Slut wordOverImg
 // --------------------------------------------------
 // Hantera händelserna dragover och drop, då ett ord släpps över listan med ord
 // För dragover utförs endast första raden med preventDefault.
 function wordOverList(e) { // e är Event-objektet
-	
+
 } // Slut wordOverList
 // --------------------------------------------------
 // Flytta tillbaks ordet till listan
 function moveBackToList(word) { // word är det ord som ska flyttas tillbaks
-	
+
 } // Slut moveBackToList
 // --------------------------------------------------
