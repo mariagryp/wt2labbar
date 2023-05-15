@@ -58,8 +58,21 @@ window.addEventListener("load", init); // Se till att init aktiveras då sidan �
 // --------------------------------------------------
 // Initiera spelet. Välj ord slumpmässigt. Visa ord och bilder.
 function startGame() {
-	console.log("startGame");
+	let tempNrs = allNrs.slice(0);//variabeln för en kopia av arrayen allNrs så att allNrs blir oförandrad. 
+	let r;
+	let words = [];//
 
+	for (let i = 0; i < 4; i++) {
+		//
+		r = Math.floor(tempNrs.length * Math.random());
+		ix = r;
+		words.push(allWords[ix]);
+		imgElems[i].src = "img/" + ix + ".jpg";
+		tempNrs.splice(ix, 1);
+	}
+
+
+	console.log(words);
 } // Slut startGame
 // --------------------------------------------------
 // Visa förstorad bild
