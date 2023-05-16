@@ -66,10 +66,27 @@ function startGame() {
 		//
 		r = Math.floor(tempNrs.length * Math.random());
 		ix = r;
-		words.push(allWords[ix]);
+		words.push(allWords[ix]);//orden läggs i variabeln words
 		imgElems[i].src = "img/" + ix + ".jpg";
 		tempNrs.splice(ix, 1);
 	}
+	for (let i = 0; i < 4; i++) {
+		//
+		r = Math.floor(tempNrs.length * Math.random());
+		ix = r;
+		words.push(allWords[ix]);//orden läggs i variabeln words
+		tempNrs.splice(ix, 1);
+	}
+	words.sort();//orden sorteras i bokstavsordning
+
+	/* var wordListElem;		// Referens till listan med de åtta orden (ul-elementet)
+	var wordElems;			// Array med referenser till elementen för de åtta orden (li-elemnten) */
+
+	for (let i = 0; i < wordElems.length; i++) {
+		wordElems[i].innerHTML = "<l>" + words[i] + "</li>";
+	}
+
+
 
 
 	console.log(words);
