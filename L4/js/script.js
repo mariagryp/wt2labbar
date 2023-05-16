@@ -85,23 +85,20 @@ function startGame() {
 	for (let i = 0; i < wordElems.length; i++) {
 		wordElems[i].innerHTML = "<l>" + words[i] + "</li>";
 	}
-
-
-
-
 	console.log(words);
 } // Slut startGame
 // --------------------------------------------------
 // Visa förstorad bild
 function showLargeImg() {
-	console.log("showLargeImg");
-
+	imgElems = this.src;
+	largeImgElem.src = imgElems;
+	console.log(imgElems);
 } // Slut showLargeImg
 // --------------------------------------------------
 // Ta bort förstorad bild
 function hideLargeImg() {
-	console.log("hideLargeImg");
-
+	largeImgElem.src = "img/empty.png";
+	console.log(largeImgElem);
 } // Slut hideLargeImg
 // --------------------------------------------------
 // Kontrollera användarens svar och visa de korrekta svaren
