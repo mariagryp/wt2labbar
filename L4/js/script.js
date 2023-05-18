@@ -51,6 +51,15 @@ function init() {
 		imgElems[i].addEventListener("mouseleave", hideLargeImg);
 	}
 
+	for (let i = 0; i < wordElems.length; i++) {
+		wordElems[i].addEventListener("dragstart", dragstartWord);
+		wordElems[i].addEventListener("dragend", dragstartWord);
+	}
+	for (let i = 0; i < answerElems.length; i++) {
+		answerElems[i].addEventListener("dragstart", dragstartWord);
+		answerElems[i].addEventListener("dragend", dragstartWord);
+	}
+
 	// Aktivera/inaktivera knappar
 
 } // Slut init
@@ -83,8 +92,13 @@ function startGame() {
 	var wordElems;			// Array med referenser till elementen för de åtta orden (li-elemnten) */
 
 	for (let i = 0; i < wordElems.length; i++) {
+		wordElems[i].draggable = true;
 		wordElems[i].innerHTML = "<l>" + words[i] + "</li>";
 	}
+	for (let i = 0; i < answerElems.length; i++) {
+		answerElems[i].draggable = true;
+	}
+
 	console.log(words);
 } // Slut startGame
 // --------------------------------------------------
