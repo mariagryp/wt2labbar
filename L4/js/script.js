@@ -14,7 +14,7 @@ var answerElems;		// Array med referenser till elementen för orden intill bilde
 var correctElems;		// Array med referenser till element för rätta svar (p)
 var largeImgElem;		// Referens till elementet med den stora bilden (img)
 // Element vid drag and drop
-var dragElem;			// Det element som dras (kan vara både li och p)
+var dragElem = this;			// Det element som dras (kan vara både li och p)
 // --------------------------------------------------
 // Funktion som körs då hela webbsidan är inladdad, dvs då all HTML-kod är utförd.
 // Initiering av globala variabler samt händelsehanterare.
@@ -70,7 +70,6 @@ function startGame() {
 	let tempNrs = allNrs.slice(0);//variabeln för en kopia av arrayen allNrs så att allNrs blir oförandrad. 
 	let r;
 	let words = [];//
-
 	for (let i = 0; i < 4; i++) {
 		//
 		r = Math.floor(tempNrs.length * Math.random());
@@ -123,12 +122,23 @@ function checkAnswers() {
 // --------------------------------------------------
 // Spara referens till elementet som dras. Lägg på händelsehanterare för drop zones.
 function dragstartWord() {
+	for (let i = 0; i < imgElems; i++) {
+		imgElems[i].addEventListener("dragover", wordOverImg);
+		imgElems[i].addEventListener("drop", wordOverImg);
+	}
+	wordListElem.addEventListener("dragover", wordOverList);
+	wordListElem.addEventListener("drop", wordOverList);
 
 } // Slut dragstartWord
 // --------------------------------------------------
 // Ta bort händelsehanterare för drop zones.
 function dragendWord() {
-
+	for (let i = 0; i < imgElems; i++) {
+		imgElems[i].removeEventListener("dragover", wordOverImg);
+		imgElems[i].removeEventListener("drop", wordOverImg);
+	}
+	wordListElem.removeEventListener("dragover", wordOverList);
+	wordListElem.removeEventListener("drop", wordOverList);
 } // Slut dragendWord
 // --------------------------------------------------
 // Hantera händelserna dragover och drop, då ett ord släpps över en bild
