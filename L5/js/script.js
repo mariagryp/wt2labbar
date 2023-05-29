@@ -21,8 +21,15 @@ var carMenu;			// Referens till menyn för att välja bil
 /* ===== Tillägg i labben ===== */
 var pigElem; // referens till img-taggen för vildsvinet
 var pigTimerRef = null; //referens till timer för att bestämma när en ny vildsvin ska dyka upp. Timer startas inte när sidan laddas = null;
+
 const pigDuration = 2000;//ska användas i timer då det ska vara 2 sekunders interval då en ny svin dyker upp igen 
 
+var pigNr;//nummer för aktuell gris)
+
+var hitCounter;//antal träffar
+
+var pigNrElem;//referans till pigNr
+var hitCounterElem;//referans till element hitCounter
 
 // --------------------------------------------------
 // Bilderna laddas in i förväg, så att alla bilder finns i webbläsarens cache, när de behövs
@@ -61,6 +68,9 @@ function init() {
 
 	/* === Tillägg i labben === */
 	pigElem = document.getElementById("pig");//referens till img-taggen med id "pig"
+
+	pigNrElem = document.getElementById("pigNr");
+	hitCounterElem = document.getElementById("hitCounter");
 
 } // Slut init
 window.addEventListener("load", init);
@@ -107,7 +117,17 @@ function startGame() {
 	moveCar();
 
 	/* === Tillägg i labben === */
+	//kod för räknare för antal grisar som tagits fram samt antal gånger man kört på dem
+	//nollställs från början
+	pigNr = 0;
+	hitCounter = 0;
+	pigNrElem.innerHTML = 0;
+	hitCounterElem.innerHTML = 0;
+
 	pigTimerRef = setTimeout(newPig, pigDuration);//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet
+
+
+
 } // Slut startGame
 // --------------------------------------------------
 // Stoppa spelet
@@ -161,21 +181,30 @@ function moveCar() {
 /* ===== Tillägg av nya funktioner i labben ===== */
 //Ett nytt vildsvin
 function newPig() {
-	let xLimit = boardElem.offsetWidth - pigElem.offsetWidth - 20;
-	let yLimit = boardElem.offsetHeight - pigElem.offsetHeight - 20;
-	let x = Math.floor(xLimit * Math.random()) + 10;
-	let y = Math.floor(yLimit * Math.random()) + 10;
+	//en ny gris skapas ifall pigNr är mindre än 10.
+	if (pigNr < 10) {
+		let xLimit = boardElem.offsetWidth - pigElem.offsetWidth - 20;
+		let yLimit = boardElem.offsetHeight - pigElem.offsetHeight - 20;
+		let x = Math.floor(xLimit * Math.random()) + 10;
+		let y = Math.floor(yLimit * Math.random()) + 10;
 
-	pigElem.style.left = x + "px";
-	pigElem.style.top = y + "px";
+		pigElem.style.left = x + "px";
+		pigElem.style.top = y + "px";
 
-	//lägga in bilden på grisen igen, då en ny gris skapas
-	pigElem.src = "img/pig.png";
+		//lägga in bilden på grisen igen, då en ny gris skapas
+		pigElem.src = "img/pig.png";
 
-	pigElem.style.visibility = "visible";
+		pigElem.style.visibility = "visible";
 
+		//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet. En ny gris kommer om 2 sekunder
+		pigTimerRef = setTimeout(newPig, pigDuration);
 
-	pigTimerRef = setTimeout(newPig, pigDuration);//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet. En ny gris kommer om 2 sekunder
+		pigNr++;
+		pigNrElem.innerHTML = pigNr;
+	} else {
+		stopGame();
+	}
+
 }
 // Slut newPig
 // --------------------------------------------------
@@ -205,6 +234,10 @@ function checkHit() {
 
 		//Starta timern för att ta fram en ny gris efter den tid som anges i pigDuration
 		pigTimerRef = setTimeout(newPig, pigDuration);
+
+		//hantera räknaren för antal träffar.
+		hitCounter++;
+		hitCounterElem.innerHTML = hitCounter;
 	}
 }
 // Slut newPig
