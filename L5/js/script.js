@@ -31,6 +31,9 @@ var hitCounter;//antal träffar
 var pigNrElem;//referans till pigNr
 var hitCounterElem;//referans till element hitCounter
 
+var catchedPig;// variabel till träffat gris
+
+
 // --------------------------------------------------
 // Bilderna laddas in i förväg, så att alla bilder finns i webbläsarens cache, när de behövs
 for (let i = 0; i < allCarImgs.length; i++) {
@@ -124,6 +127,8 @@ function startGame() {
 	pigNrElem.innerHTML = 0;
 	hitCounterElem.innerHTML = 0;
 
+	catchedPig = true;// markerar att ingen kontroll ska göras förrän första grisen tagits fram.
+
 	pigTimerRef = setTimeout(newPig, pigDuration);//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet
 
 
@@ -199,8 +204,11 @@ function newPig() {
 		//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet. En ny gris kommer om 2 sekunder
 		pigTimerRef = setTimeout(newPig, pigDuration);
 
-		pigNr++;
-		pigNrElem.innerHTML = pigNr;
+		catchedPig = false;//grisen är inte träffat än
+
+		pigNr++;//antalet visade gris ökar med 1
+		pigNrElem.innerHTML = pigNr;//visar antalet träffade grisar
+
 	} else {
 		stopGame();
 	}
@@ -211,6 +219,11 @@ function newPig() {
 
 //Kontrollera om bilen krockar med vildsvinet
 function checkHit() {
+	//kontrollera om grisen redan träffad, då ska du inte kontrollera träff igen
+	if (catchedPig) {
+		return;
+	}
+
 	//bilens respektive grisens bredd
 	let cSize = carElem.offsetWidth;// bilens bredd
 	let pSize = pigElem.offsetWidth;// grisens bredd
@@ -235,10 +248,13 @@ function checkHit() {
 		//Starta timern för att ta fram en ny gris efter den tid som anges i pigDuration
 		pigTimerRef = setTimeout(newPig, pigDuration);
 
+		//Vildsvinet är nu träffat.
+		catchedPig = true;
+
 		//hantera räknaren för antal träffar.
 		hitCounter++;
 		hitCounterElem.innerHTML = hitCounter;
 	}
 }
-// Slut newPig
+// Slut checkHit
 // --------------------------------------------------
