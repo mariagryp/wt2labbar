@@ -152,13 +152,14 @@ function moveCar() {
 	timerRef = setTimeout(moveCar, timerStep);
 
 	/* === Tillägg i labben === */
-
+	//ett anrop av checkHit
+	checkHit();
 
 } // Slut moveCar
 // --------------------------------------------------
 
 /* ===== Tillägg av nya funktioner i labben ===== */
-//function newPig
+//Ett nytt vildsvin
 function newPig() {
 	let xLimit = boardElem.offsetWidth - pigElem.offsetWidth - 20;
 	let yLimit = boardElem.offsetHeight - pigElem.offsetHeight - 20;
@@ -168,10 +169,43 @@ function newPig() {
 	pigElem.style.left = x + "px";
 	pigElem.style.top = y + "px";
 
+	//lägga in bilden på grisen igen, då en ny gris skapas
+	pigElem.src = "img/pig.png";
+
 	pigElem.style.visibility = "visible";
 
 
 	pigTimerRef = setTimeout(newPig, pigDuration);//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet. En ny gris kommer om 2 sekunder
+}
+// Slut newPig
+// --------------------------------------------------
+
+//Kontrollera om bilen krockar med vildsvinet
+function checkHit() {
+	//bilens respektive grisens bredd
+	let cSize = carElem.offsetWidth;// bilens bredd
+	let pSize = pigElem.offsetWidth;// grisens bredd
+
+	//bilens respektive grisens left och top i variablerna
+	//parseInt tar bort enheten px
+	let cL = parseInt(carElem.style.left);
+	let cT = parseInt(carElem.style.top);
+	let pL = parseInt(pigElem.style.left);
+	let pT = parseInt(pigElem.style.top);
+
+	// villkoret som ska kontrolleras, för att se om vi har en krock.
+	if (
+		cL + 10 < pL + pSize &&
+		cL + cSize - 10 > pL &&
+		cT + 10 < pT + pSize &&
+		cT + cSize - 10 > pT) {
+		clearTimeout(pigTimerRef);
+		//bilden för grisen byttas mot en smack.png då dem krockas 
+		pigElem.src = "img/smack.png";
+
+		//Starta timern för att ta fram en ny gris efter den tid som anges i pigDuration
+		pigTimerRef = setTimeout(newPig, pigDuration);
+	}
 }
 // Slut newPig
 // --------------------------------------------------
