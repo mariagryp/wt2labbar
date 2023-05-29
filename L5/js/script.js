@@ -20,6 +20,8 @@ var carMenu;			// Referens till menyn för att välja bil
 
 /* ===== Tillägg i labben ===== */
 var pigElem; // referens till img-taggen för vildsvinet
+var pigTimerRef = null; //referens till timer för att bestämma när en ny vildsvin ska dyka upp. Timer startas inte när sidan laddas = null;
+const pigDuration = 2000;//ska användas i timer då det ska vara 2 sekunders interval då en ny svin dyker upp igen 
 
 
 // --------------------------------------------------
@@ -105,7 +107,7 @@ function startGame() {
 	moveCar();
 
 	/* === Tillägg i labben === */
-	newPig();
+	pigTimerRef = setTimeout(newPig, pigDuration);//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet
 } // Slut startGame
 // --------------------------------------------------
 // Stoppa spelet
@@ -116,6 +118,8 @@ function stopGame() {
 	carMenu.disabled = false;
 
 	/* === Tillägg i labben === */
+	if (pigTimerRef != null) clearTimeout(pigTimerRef);//timern för griserna stoppas 
+	pigElem.style.visibility = "hidden";//griserna stoppaas att dyka upp
 
 } // Slut stopGame
 // --------------------------------------------------
@@ -165,4 +169,9 @@ function newPig() {
 	pigElem.style.top = y + "px";
 
 	pigElem.style.visibility = "visible";
+
+
+	pigTimerRef = setTimeout(newPig, pigDuration);//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet. En ny gris kommer om 2 sekunder
 }
+// Slut newPig
+// --------------------------------------------------
