@@ -10,11 +10,20 @@ function init() {
 
 	// Händelsehanterare för textfält som ska kontrolleras
 	for (let i = 0; i < formElem.roomType.length; i++) {
+		//click händelse läggas till på rumsknapparna)
 		formElem.roomType[i].addEventListener("click", checkIfFamilyRoom);
+
+		//skriver ut kostnaderna till höger om texten för rumstyperna 
+		formElem.roomType[i].nextSibling.textContent += " (" + roomPrice[i] + " kr)";
 	}
+	//skriver ut kostnaderna till höger om texten för tillägg 
+	for (let i = 0; i < formElem.facility.length; i++) {
+		formElem.facility[i].nextSibling.textContent += " (" + facilityPrice[i] + " kr)";
+	}
+
 	// Händelsehanterare för kampanjkod
 
-	checkIfFamilyRoom();
+	checkIfFamilyRoom();//anrop av checkIfFamilyRoom.
 } // Slut init
 window.addEventListener("load", init);
 // --------------------------------------------------
