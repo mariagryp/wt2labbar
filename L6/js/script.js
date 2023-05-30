@@ -7,8 +7,9 @@ var formElem;		// Referens till elementet med hela formuläret
 function init() {
 	formElem = document.getElementById("booking");
 
-	formElem.city.addEventListener("blur", checkCity);
-
+	formElem.city.addEventListener("blur", checkCity);//Händelsehanterare för ort fältet
+	formElem.zipcode.addEventListener("blur", checkField);//Händelsehanterare för zipcode fältet
+	formElem.telephone.addEventListener("blur", checkField);//Händelsehanterare telephone fältet
 	// Händelsehanterare för textfält som ska kontrolleras
 	for (let i = 0; i < formElem.roomType.length; i++) {
 		//click händelse läggas till på rumsknapparna)
@@ -82,9 +83,34 @@ function calculateCost() {
 	totalCost.innerHTML = nrOfNights * price;
 }
 
-//function check city bokstäver konverteras till versaler.
+// bokstäver konverteras till versaler i Ort fältet
 function checkCity() {
 	let city = this.value;//lokal variable för cit element
 	city = city.toUpperCase();//Konvertera innehållet i variabeln city till versaler
 	this.value = city;
 }
+
+//Kontrollera fält med postnummer och telefonnummer
+function checkField() {
+	const fieldNames = ["zipcode", "telephone"];
+
+	//array med regulära uttryck för fälten
+	const re = [
+		/^\d{3} ?\d{2}$/, //postnummer
+		/^\d{1,3}[-/ ]?\d{5,8}$/ //Telefonnumer
+	];
+	//array med felmeddelanden
+	const errMsg = [
+		"Postnummer måste bestå av fem siffror.",
+		"Telefonnumer måste börja med 0:a och följas av 6-11 siffror."
+	];
+	let ix = fieldNames.indexOf(this.name);//index till re och errMsg
+	let errMsgElem = this.nextElementSibling;//element för felmeddelande
+	errMsgElem.innerHTML = "";
+	if (!re[ix].test(this.value)) {
+		errMsgElem.innerHTML = errMsg[ix];
+		return false;// fel i fältet
+	} else {
+		return true; //fältet är OK
+	}
+}//slut checField
