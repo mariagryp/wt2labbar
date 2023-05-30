@@ -7,6 +7,8 @@ var formElem;		// Referens till elementet med hela formuläret
 function init() {
 	formElem = document.getElementById("booking");
 
+	formElem.city.addEventListener("blur", checkCity);
+
 	// Händelsehanterare för textfält som ska kontrolleras
 	for (let i = 0; i < formElem.roomType.length; i++) {
 		//click händelse läggas till på rumsknapparna)
@@ -78,4 +80,11 @@ function calculateCost() {
 	}
 	let nrOfNights = formElem.nrOfNights.value;
 	totalCost.innerHTML = nrOfNights * price;
+}
+
+//function check city bokstäver konverteras till versaler.
+function checkCity() {
+	let city = this.value;//lokal variable för cit element
+	city = city.toUpperCase();//Konvertera innehållet i variabeln city till versaler
+	this.value = city;
 }
