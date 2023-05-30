@@ -7,9 +7,6 @@ var formElem;		// Referens till elementet med hela formuläret
 function init() {
 	formElem = document.getElementById("booking");
 
-	formElem.city.addEventListener("blur", checkCity);//Händelsehanterare för ort fältet
-	formElem.zipcode.addEventListener("blur", checkField);//Händelsehanterare för zipcode fältet
-	formElem.telephone.addEventListener("blur", checkField);//Händelsehanterare telephone fältet
 	// Händelsehanterare för textfält som ska kontrolleras
 	for (let i = 0; i < formElem.roomType.length; i++) {
 		//click händelse läggas till på rumsknapparna)
@@ -24,21 +21,21 @@ function init() {
 	//skriver ut kostnaderna till höger om texten för tillägg 
 	for (let i = 0; i < formElem.facility.length; i++) {
 		formElem.facility[i].nextSibling.textContent += " (" + facilityPrice[i] + " kr)";
-
 		//Händelsehanterare calculate kostnader
 		formElem.facility[i].addEventListener("click", calculateCost);
 	}
-
 	formElem.nrOfNights.addEventListener("change", calculateCost);
-
-
-	// Händelsehanterare för kampanjkod
-
-
-
 	checkIfFamilyRoom();//anrop av checkIfFamilyRoom.
 	calculateCost();//anrop av calculateCost
 
+	formElem.city.addEventListener("blur", checkCity);//Händelsehanterare för ort fältet
+	formElem.zipcode.addEventListener("blur", checkField);//Händelsehanterare för zipcode fältet
+	formElem.telephone.addEventListener("blur", checkField);//Händelsehanterare telephone fältet
+
+	// Händelsehanterare för kampanjkod
+	formElem.campaigncode.addEventListener("focus", checkCampaign);
+	formElem.campaigncode.addEventListener("keyup", checkCampaign);
+	formElem.campaigncode.addEventListener("blur", endCheckCampaign);
 } // Slut init
 window.addEventListener("load", init);
 // --------------------------------------------------
@@ -57,14 +54,12 @@ function checkIfFamilyRoom() {
 		formElem.persons.parentNode.style.color = "#999";//grå label
 		formElem.facility[2].disabled = false;//Alternativet Sjöutsikt aktiveras
 		formElem.facility[2].parentNode.style.color = "#000";//svart label
-
 	}
 }
 
 //Beräkna total kostnad
 function calculateCost() {
 	let price = 0;
-
 	//en loop där du går igenom radioknapprna för rumstyp.
 	for (let i = 0; i < formElem.roomType.length; i++) {
 		if (formElem.roomType[i].checked) {
@@ -72,7 +67,6 @@ function calculateCost() {
 			break;
 		}
 	}
-
 	//en loop där du går igenom kryssrutorna för tilläggen.
 	for (let i = 0; i < formElem.facility.length; i++) {
 		if (formElem.facility[i].checked) {
@@ -93,7 +87,6 @@ function checkCity() {
 //Kontrollera fält med postnummer och telefonnummer
 function checkField() {
 	const fieldNames = ["zipcode", "telephone"];
-
 	//array med regulära uttryck för fälten
 	const re = [
 		/^\d{3} ?\d{2}$/, //postnummer
@@ -114,3 +107,19 @@ function checkField() {
 		return true; //fältet är OK
 	}
 }//slut checField
+
+//Kontrollera kampanjkod
+function checkCampaign() {
+	/* En kampanjkod ska bestå av tre bokstäver, ett bindestreck, två siffror, ett bindestreck, en bokstav och en siffra, t.ex. ABC-12-D3. */
+	let re = /^[A-Z]{3}-\d{2}-[A-Z]{1}\d{1}$/i;
+	if (re.test(this.value)) this.style.backgroundColor = "#6F9";
+	else this.style.backgroundColor = "#F99";
+}// slut checkCampaign
+
+//avslutar kontrollen av kampanjkoden.
+function endCheckCampaign() {
+	this.style.backgroundColor = "";
+	let campaignCode = this.value;//variabeln för campaign fälte
+	campaignCode = campaignCode.toUpperCase();//Ändra innehållet i textfältet till endast versaler för bokstäver
+	this.value = campaignCode;//ändrat innehålet
+} 
