@@ -73,15 +73,15 @@ function calculateCost() {
 			price += facilityPrice[i];
 		}
 	}
-	let nrOfNights = formElem.nrOfNights.value;
-	totalCost.innerHTML = nrOfNights * price;
+	let nrOfNights = formElem.nrOfNights.value;//indata of numbers of nights
+	totalCost.innerHTML = nrOfNights * price;//räknar priset för valda nätter
 }
 
 // bokstäver konverteras till versaler i Ort fältet
 function checkCity() {
 	let city = this.value;//lokal variable för cit element
 	city = city.toUpperCase();//Konvertera innehållet i variabeln city till versaler
-	this.value = city;
+	this.value = city;//konverterat 
 }
 
 //Kontrollera fält med postnummer och telefonnummer
@@ -112,6 +112,7 @@ function checkField() {
 function checkCampaign() {
 	/* En kampanjkod ska bestå av tre bokstäver, ett bindestreck, två siffror, ett bindestreck, en bokstav och en siffra, t.ex. ABC-12-D3. */
 	let re = /^[A-Z]{3}-\d{2}-[A-Z]{1}\d{1}$/i;
+	//ändra färge av input element beroende av input data
 	if (re.test(this.value)) this.style.backgroundColor = "#6F9";
 	else this.style.backgroundColor = "#F99";
 }// slut checkCampaign

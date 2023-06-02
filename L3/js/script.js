@@ -27,10 +27,10 @@ function init() {
     msgElem = document.getElementById("message");//Referens till div-elementet för meddelanden.
     hangmanImg = document.getElementById("hangman");//Referens till img-elementet med bilden för galgen och gubben.
 
-
     //Startknappen anropas
     document.getElementById("startGameBtn").onclick = startGame;//funktionen startGameanropas, då man klickar på startknappen.
 
+    //start knappen aktiverad från början och letter buttons är inaktiv
     startGameBtn.disabled = false;
     for (let i = 0; i < letterButtons.length; i++)
         letterButtons[i].disabled = true;
@@ -40,15 +40,16 @@ window.onload = init; // Se till att init aktiveras då sidan är inladdad
 // --------------------------------------------------
 
 //Function för initiering av ett nytt spel. Välja ord, visa bokstavsrutor,
-//visa första bilden (tom bild)
-function startGame() {
-    let now = new Date();
-    startTime = now.getTime();
-    randomWord();
-    showLetterBoxes();
-    hangmanNr = 0;
-    hangmanImg.src = "img/h0.png";
 
+function startGame() {
+    let now = new Date();//
+    startTime = now.getTime();//räknar tiden 
+    randomWord();//slumpade ord
+    showLetterBoxes();//visa bokstavrutor
+    hangmanNr = 0;
+    hangmanImg.src = "img/h0.png";//visa första bilden (tom bild)
+
+    //aktivering/inaktivering av knappar
     startGameBtn.disabled = true;
     for (let i = 0; i < letterButtons.length; i++)
         letterButtons[i].disabled = false;
@@ -57,7 +58,6 @@ function startGame() {
 }// slut startGame
 
 //Function randomWord
-/* Funktionen randomWord •Ta fram ett slumptal som ska användas som ett index till en lista av ord. Det ska alltså vara ett tal mellan 0 och antal ord i en listan. •Indexera listan med slumptalet och spara valt ord i en global variabel. (Ordet behövs sedan i de andra funktionerna.) */
 function randomWord() {
     let oldWord = selectedWord;
     while (oldWord == selectedWord) {
@@ -68,37 +68,38 @@ function randomWord() {
 
 //Function showLetterBoxes
 function showLetterBoxes() {
-    let newCode = "";//
+    let newCode = "";
     //for-loop för att gå igenom alla tecken i selectedWord
-    for (i = 0; i < selectedWord.length; i++) {
+    for (let i = 0; i < selectedWord.length; i++) {
         newCode += "<span>&nbsp;</span>";
     }
     document.getElementById("letterBoxes").innerHTML = newCode;
     letterBoxes = document.getElementById("letterBoxes").getElementsByTagName("span");
-
 }// slut showLetterBoxes
 
 //Function guessLetter
 function guessLetter() {
-    let letter = this.value;
-    this.disabled = true;
-    let letterFound = false;//variabeln för 
-    let correctLettersCount = 0;
-    console.log(letter);
-    for (i = 0; i < selectedWord.length; i++) {
-        if (letter == selectedWord.charAt(i)) {
-            letterBoxes[i].innerHTML = letter;
-            letterFound = true;
+    let letter = this.value;//referens till input "värde" från knappar  
+    this.disabled = true;//vald knappen är inaktivt
+    let letterFound = false;//variabeln för bokstaven 
+    let correctLettersCount = 0;//variable för korrekt svar
+
+    //om bokstaven rätt
+    for (let i = 0; i < selectedWord.length; i++) {
+        if (letter == selectedWord.charAt(i)) {//jämför letter med de tecken i selectedWord
+            letterBoxes[i].innerHTML = letter;//lägger in bokstaven i det rätta boxen
+            letterFound = true;//bokstaven fanns
         }
         if (letterBoxes[i].innerHTML !== "&nbsp;") {
             correctLettersCount++;
-        }
+        }//kontrollera om bokstavrutor är fyllda och lägga till poingen 
     }
+    //om bokstaven inte fanns hangmanNr och nya bilder dyker up
     if (letterFound == false) {
         hangmanNr++;
         hangmanImg.src = "img/h" + hangmanNr + ".png";
         if (hangmanNr == 6) {
-            endGame(true);
+            endGame(true);//spelet avslutas när man har 6 bilder 
         }
     }
     if (correctLettersCount == selectedWord.length) {
@@ -108,17 +109,17 @@ function guessLetter() {
 
 //Function endGame
 function endGame(manHanged) {
-    let runTime = (new Date().getTime() - startTime) / 1000;
+    let runTime = (new Date().getTime() - startTime) / 1000; // räknar spelets tid
     if (manHanged == true) {
-        msgElem.innerHTML = "Du lyckades inte att rädda gubben. Gubben hängdes! Rätt svar är " + selectedWord;
+        msgElem.innerHTML = "Du lyckades inte att rädda gubben. Gubben hängdes! Rätt svar är " + selectedWord;//fell meddelande och visa rätt ord om svaret var fel
     } else {
-        msgElem.innerHTML = "Gratuerar! Du lyckades att rädda gubben!";
+        msgElem.innerHTML = "Gratuerar! Du lyckades att rädda gubben!";// rätt svar
     }
-    startGameBtn.disabled = false;
+    startGameBtn.disabled = false;//start bknappen aktiveras och bokstavsknappen inaktiveras
     for (let i = 0; i < letterButtons.length; i++)
         letterButtons[i].disabled = true;
 
-    msgElem.innerHTML += "<br>Det tog " + runTime.toFixed(1) + " sekunder.";
+    msgElem.innerHTML += "<br>Det tog " + runTime.toFixed(1) + " sekunder.";//meddelande med räknade tiden
 }// slut endGame
 
 

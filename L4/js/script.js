@@ -1,52 +1,15 @@
 // Globala konstanter och variabler
 // Arrayer med nummer för bilder samt tillhörande namn och beskrivning
-const allNrs = [
-	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-];
+const allNrs =
+	[
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+	];
 const allWords = [
-	"Borgholm",
-	"Gränna",
-	"Gävle",
-	"Göteborg",
-	"Halmstad",
-	"Jönköping",
-	"Kalmar",
-	"Karlskrona",
-	"Kiruna",
-	"Ljungby",
-	"Malmö",
-	"Norrköping",
-	"Skara",
-	"Stockholm",
-	"Sundsvall",
-	"Umeå",
-	"Visby",
-	"Västervik",
-	"Växjö",
-	"Örebro",
-];
-const allDescriptions = [
-	"Kyrkan",
-	"Storgatan",
-	"Julbock",
-	"Operan",
-	"Picassoparken",
-	"Sofiakyrkan",
-	"Domkyrkan",
-	"Rosenbom",
-	"Stadshus",
-	"Garvaren",
-	"Stortorget",
-	"Spårvagn",
-	"Domkyrka",
-	"Rosenbad",
-	"Hotell Knaust",
-	"Storgatan",
-	"Stadsmur",
-	"Hamnen",
-	"Teater",
-	"Svampen",
-];
+	"Borgholm", "Gränna", "Gävle", "Göteborg", "Halmstad", "Jönköping", "Kalmar", "Karlskrona", "Kiruna", "Ljungby", "Malmö", "Norrköping", "Skara", "Stockholm", "Sundsvall", "Umeå", "Visby", "Västervik", "Växjö", "Örebro",];
+
+const allDescriptions =
+	["Kyrkan", "Storgatan", "Julbock", "Operan", "Picassoparken", "Sofiakyrkan", "Domkyrkan", "Rosenbom", "Stadshus", "Garvaren", "Stortorget", "Spårvagn", "Domkyrka", "Rosenbad", "Hotell Knaust", "Storgatan", "Stadsmur", "Hamnen", "Teater", "Svampen",
+	];
 // Element i gränssnittet
 var startGameBtn; // Referenser till start-knappen (button)
 var checkAnswersBtn; // Referens till knappen för att kontrollera svar (button)
@@ -69,9 +32,7 @@ function init() {
 	startGameBtn = document.getElementById("startGameBtn");
 	checkAnswersBtn = document.getElementById("checkAnswersBtn");
 	msgElem = document.getElementById("message");
-	wordListElem = document
-		.getElementById("wordList")
-		.getElementsByTagName("ul")[0];
+	wordListElem = document.getElementById("wordList").getElementsByTagName("ul")[0];
 	wordElems = document.getElementById("wordList").getElementsByTagName("li");
 	imgElems = document.getElementById("imgList").getElementsByTagName("img");
 	answerElems = document.getElementsByClassName("userAnswer");
@@ -82,22 +43,20 @@ function init() {
 	startGameBtn.addEventListener("click", startGame);
 	checkAnswersBtn.addEventListener("click", checkAnswers);
 	// Går igenom de små bilderna i imgElems och lägger på två händelsehanterare på varje element
-	for (i = 0; i < imgElems.length; i++) {
+	for (let i = 0; i < imgElems.length; i++) {
 		imgElems[i].addEventListener("mouseenter", showLargeImg);
 		imgElems[i].addEventListener("mouseleave", hideLargeImg);
 	}
-
 	// Går igenom alla wordElems och lägger till händelsehanterare och funktioner på varje element
-	for (i = 0; i < wordElems.length; i++) {
+	for (let i = 0; i < wordElems.length; i++) {
 		wordElems[i].addEventListener("dragstart", dragstartWord);
 		wordElems[i].addEventListener("dragend", dragendWord);
 	}
 	// Går igenom alla answerElems och lägger till händelsehanterare och funktioner på varje element
-	for (i = 0; i < answerElems.length; i++) {
+	for (let i = 0; i < answerElems.length; i++) {
 		answerElems[i].addEventListener("dragstart", dragstartWord);
 		answerElems[i].addEventListener("dragend", dragendWord);
 	}
-
 
 	// Aktivera/inaktivera knappar
 	startGameBtn.disabled = false;
@@ -114,9 +73,8 @@ function startGame() {
 	let words = []; // Array för slumpade ord
 
 	// Slumpar fyra ord och bilder
-	for (i = 0; i < 4; i++) {
+	for (let i = 0; i < 4; i++) {
 		let r = Math.floor(Math.random() * tempNrs.length); // Slumpar ett tal mellan 0 och antalet element i arrayen
-
 		let ix = tempNrs[r]; // Sparar nummer i en variabel
 		words.push(allWords[ix]); // Sparar det valda ordet i words-variabeln
 		imgElems[i].src = "img/" + ix + ".jpg"; // Visar den valda bilden i img-taggen
@@ -125,7 +83,7 @@ function startGame() {
 	}
 
 	// Slumpar ytterligare fyra ord
-	for (i = 0; i < 4; i++) {
+	for (let i = 0; i < 4; i++) {
 		let r = Math.floor(Math.random() * tempNrs.length); // Slumpar ett tal mellan 0 och antalet element i arrayen
 		let ix = tempNrs[r]; // Sparar nummer i en variabel
 		words.push(allWords[ix]); // Sparar det valda ordet i words-variabeln
@@ -134,15 +92,16 @@ function startGame() {
 	words.sort(); // Sorterar orden i alfabetisk ordning
 
 	// Skriver ut slumpade ord i li-elementen
-	for (i = 0; i < wordElems.length; i++) {
+	for (let i = 0; i < wordElems.length; i++) {
 		wordElems[i].innerHTML = words[i];
-		wordElems[i].draggable = true;
+		wordElems[i].draggable = true;//ord är draggable
 	}
 
-	for (i = 0; i < answerElems.length; i++) {
+	// 
+	for (let i = 0; i < answerElems.length; i++) {
 		answerElems[i].draggable = true;
-		answerElems[i].innerHTML = "";
-		correctElems[i].innerHTML = "";
+		answerElems[i].innerHTML = "";//Rensa svar för nytt spel
+		correctElems[i].innerHTML = "";//Rensa  korrekt svar för nytt spel
 	}
 
 	startGameBtn.disabled = true;
@@ -177,7 +136,7 @@ function checkAnswers() {
 		for (let i = 0; i < answerElems.length; i++) {
 			answerElems[i].draggable = false;
 		}
-		let points = 0;
+		let points = 0;//antal gånger rätt svar
 		for (let i = 0; i < answerElems.length; i++) {
 			let ix = imgElems[i].id;
 			if (answerElems[i].innerHTML == allWords[ix]) {
@@ -199,7 +158,7 @@ function checkAnswers() {
 function dragstartWord() {
 	dragElem = this; // En referens till det element som användaren börjar dra
 	// Går igenom imgElems och lägger på händelsehanterare och funktioner
-	for (i = 0; i < imgElems.length; i++) {
+	for (let i = 0; i < imgElems.length; i++) {
 		imgElems[i].addEventListener("dragover", wordOverImg);
 		imgElems[i].addEventListener("drop", wordOverImg);
 	}
@@ -213,7 +172,7 @@ function dragstartWord() {
 // Ta bort händelsehanterare för drop zones.
 function dragendWord() {
 	// Går igenom imgElems och lägger på händelsehanterare och funktioner
-	for (i = 0; i < imgElems.length; i++) {
+	for (let i = 0; i < imgElems.length; i++) {
 		imgElems[i].removeEventListener("dragover", wordOverImg);
 		imgElems[i].removeEventListener("drop", wordOverImg);
 	}
@@ -231,7 +190,7 @@ function wordOverImg(e) {
 	e.preventDefault();
 	if (e.type == "drop") {
 		let dropElem = this.nextElementSibling;
-		if (dropElem.innerHTML != "") {
+		if (dropElem.innerHTML != "") { // kontrollera om det finns ord i lukan
 			moveBackToList(dropElem.innerHTML);
 		}
 		dropElem.innerHTML = dragElem.innerHTML;

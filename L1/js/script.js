@@ -18,9 +18,9 @@ function areaCalculations() {
     let width; // bredd i meter
     let area; //yta i kvadratmeter
 
-    length = Number(inp1Elem.value);
-    width = Number(inp2Elem.value);
-    area = length * width;
+    length = Number(inp1Elem.value);//värde från input element
+    width = Number(inp2Elem.value);//värde från input element
+    area = length * width;//räkna yta 
 
     resElem.innerHTML += "<p>Rektangelns area är " + area + " m<sup>2</sup></p>";
 
@@ -32,9 +32,6 @@ function areaCalculations() {
     area = (length + 5) * width;
     resElem.innerHTML += "<p>Då längden ökas med 5m blir rektangelns area " + area + " m<sup>2</sup></p>";
 
-
-    //8. Egna tillägg
-
     //8a. Rektangelns längden ökas med 50% och bredden ökas med 3 meter
     area = (length + length * 0.5) * (width + 3);
     resElem.innerHTML += "<p>Då längden ökas med 50% och bredden ökas med 3 meter blir rektangelns area " + area + " m<sup>2</sup></p>";
@@ -42,10 +39,5 @@ function areaCalculations() {
     //8b. Beräkning av triangelns area
     area = (length * 3.28 * width * 3.28) / 2;
     resElem.innerHTML += "<p>Triangelns area blir " + area + " m<sup>2</sup></p>";
-
-    //9a. Finn fem fel
-    //9b. Finn fem fel
-    //9c. Finn fem fel
-
 
 }// slut på areaCalculations

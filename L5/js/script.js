@@ -33,7 +33,6 @@ var hitCounterElem;//referans till element hitCounter
 
 var catchedPig;// variabel till träffat gris
 
-
 // --------------------------------------------------
 // Bilderna laddas in i förväg, så att alla bilder finns i webbläsarens cache, när de behövs
 for (let i = 0; i < allCarImgs.length; i++) {
@@ -130,11 +129,10 @@ function startGame() {
 	catchedPig = true;// markerar att ingen kontroll ska göras förrän första grisen tagits fram.
 
 	pigTimerRef = setTimeout(newPig, pigDuration);//funktion newPig(vildsvin visas) startas först efter 2 sekunder efter man startar spelet
-
-
-
 } // Slut startGame
+
 // --------------------------------------------------
+
 // Stoppa spelet
 function stopGame() {
 	if (timerRef != null) clearTimeout(timerRef);

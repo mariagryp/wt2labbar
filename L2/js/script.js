@@ -15,17 +15,15 @@ function init() {
 
     selFruitNr = 0;//inga frukt är vald i första fältet från början
 } // Slut init
-
 window.onload = init; // Se till att init aktiveras då sidan är inladdad
 // --------------------------------------------------
 
 //function showFruit läsar in indata och visar motsvarande bild på sidan
 function showFruit() {
-    let nr = getInput(inp1Elem, 5);//variable för läsa och spara indata konverterat in number
+    let nr = getInput(inp1Elem, 5);//variable för att läsa och spara indata konverterat in number
     if (nr == -1) return;// kontrol om nr är -1 (mindre än 0) så är det fel och funktionen avbryts med return
 
-
-    document.getElementById("fruitImg").src = getUrl(nr);
+    document.getElementById("fruitImg").src = getUrl(nr);//
 
     //numret på valda frukt sparas i den globala variablen selFruitNr så att denna frukt ska visas
     selFruitNr = nr;
