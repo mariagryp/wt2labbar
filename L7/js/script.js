@@ -12,9 +12,14 @@ var dropElems;// Array med referenser till element för "drop zones"
 var dragElems; // det element som dras 
 var tileElems;// referens till toma brickor
 let dragTile; // Elementet som användaren börjar dra
-
 let dropCount = 0;// variabel för att kontollera antal släppta brickor
-
+let gameCounter = 0;// variabel för spel räknare 
+let markElems;//array med mark elelemnter
+let countGamesMsg;//antal spel
+let tempAllNrs;// temporary array of allNrs
+let totalPoints = 0;// variabel för poäng
+let allTotalPoints = 0;
+let msgTotalPoints;
 
 /* ---------------------init------------------------------- */
 
@@ -23,10 +28,12 @@ function init() {
     newGameBtn = document.getElementById("newGameBtn");//start knappen
     newTilesBtn = document.getElementById("newTilesBtn");//new tiles knappen
     msgElem = document.getElementById("message");//meddelande till användaren
-    infoOutput = document.getElementById("userInfo");// referens till info om spelet
+    countGamesMsg = document.getElementById("countGames");// referens till elelemnt antal spel
     dropElems = document.getElementById("board").getElementsByClassName("tile");//referens till drop zones brickorna
     dragElems = document.getElementById("newTiles").getElementsByClassName("tile");//referens till elementen för rutorna
-    dragBox = document.getElementById("newTiles").getElementsByClassName("empty");
+    /* dragBox = document.getElementById("newTiles").getElementsByClassName("empty"); */
+    msgTotalPoints = document.getElementById("totPoints");//referens till elemenet för total antal poäng
+    markElems = document.getElementById("board").getElementsByClassName("mark");
     /* ----------------Händelsehanterare---------- */
     for (let i = 0; i < dragElems.length; i++) {
         dragElems[i].addEventListener("dragstart", dragStart);
@@ -43,18 +50,29 @@ function init() {
 window.addEventListener("load", init); //init aktiveras då sidan är inladdad
 
 /* ---------------------newGame------------------------------- */
-
 //initiera spelet  
 function newGame() {
+    msgElem.innerHTML = "";
+    tempAllNrs = allNrs.slice();// kopia av array med all numbers
+    dropCount = 0;
+    totalPoints = 0;
     // Aktivera/inaktivera knappar
     newGameBtn.disabled = true;
     newTilesBtn.disabled = false;
 
+    //ändrar style på dropElems vid spelets start
     for (let i = 0; i < dropElems.length; i++) {
         dropElems[i].innerHTML = "";
         dropElems[i].classList.remove("filled");
         dropElems[i].classList.add("empty");
     }
+
+    //ta bort class check och cross från elementer för bock och kryss
+    for (let i = 0; i < markElems.length; i++) {
+        markElems[i].classList.remove("cross");
+        markElems[i].classList.remove("check");
+    }
+
 }//slut newGame()
 
 /* ---------------------newNumbers------------------------------- */
@@ -62,10 +80,10 @@ function newGame() {
 //toma brickor fylls med slumpade nummer
 function newNumbers() {
     //slumpar 4 siffror bland allNrs*/
-    for (let i = 0; i < 4; i++) {
-        let r = Math.floor(Math.random() * allNrs.length);//
-        let ix = allNrs[r];//nytt nummer sparas i variabeln 
-        allNrs.splice(r, 1);//ta bort ett num som är redan vald
+    for (let i = 0; i < dragElems.length; i++) {
+        let r = Math.floor(Math.random() * tempAllNrs.length);//
+        let ix = tempAllNrs[r];//nytt nummer sparas i variabeln 
+        tempAllNrs.splice(r, 1);//ta bort ett num som är redan vald
         dragElems[i].innerHTML = ix;//nummret löggas in i 
         //Ändra en class
         dragElems[i].classList.remove("empty");
@@ -88,7 +106,6 @@ function dragStart(e) {
         dropElems[i].addEventListener("dragleave", dropZone);
         dropElems[i].addEventListener("drop", dropZone);
     }
-    //console.log(dragStart);
 }
 
 /* ---------------------dropZone------------------------------- */
@@ -122,22 +139,83 @@ function dropZone(e) {
         }
         //Då alla nya brickor dragits till spelplanen, ska knappen för nya brickor aktiveras igen, så att man kan klicka fram fyra nya brickor.
         for (let i = 0; i < dragElems.length; i++) {
-            if (dragElems[i].innerHTML != "") {
-                newTilesBtn.disabled = true;
+            if (dragElems[i].innerHTML == "") {
+                newTilesBtn.disabled = false; // on
             } else {
-                newTilesBtn.disabled = false;
+                newTilesBtn.disabled = true; // off
             }
         }
-        dropCount++;//räknare för antal droppar
+        dropCount++;
+        console.log(dropCount);
+        //räknare för antal droppar
         if (dropCount == 16) {
-            newGameBtn.disabled = false;
-            newTilesBtn.disabled = true;
+            controlTilesSeries();
+            countCheckMarks();
+            endGame();
         }
     }
 }
+/* ---------------------controlTilesSeries------------------------------- */
+function controlTilesSeries() {
+    //referenser till raderna och kolumnerna
+    let s1 = document.getElementsByClassName("s1");//raderna
+    let s2 = document.getElementsByClassName("s2");//raderna
+    let s3 = document.getElementsByClassName("s3");//raderna
+    let s4 = document.getElementsByClassName("s4");//raderna
+    let s5 = document.getElementsByClassName("s5");//kolumnerna
+    let s6 = document.getElementsByClassName("s6");//kolumnerna
+    let s7 = document.getElementsByClassName("s7");//kolumnerna
+    let s8 = document.getElementsByClassName("s8");//kolumnerna
+
+    //referenser till bock eller kryss elementer
+    let s1mark = document.getElementById("s1mark");
+    let s2mark = document.getElementById("s2mark");
+    let s3mark = document.getElementById("s3mark");
+    let s4mark = document.getElementById("s4mark");
+    let s5mark = document.getElementById("s5mark");
+    let s6mark = document.getElementById("s6mark");
+    let s7mark = document.getElementById("s7mark");
+    let s8mark = document.getElementById("s8mark");
+
+    //anropar funktion för att kontroller serier 
+    control(s1, s1mark);
+    control(s2, s2mark);
+    control(s3, s3mark);
+    control(s4, s4mark);
+    control(s5, s5mark);
+    control(s6, s6mark);
+    control(s7, s7mark);
+    control(s8, s8mark);
+}
+
+// Går igenom varje serie och tilldelar klass beroende om serie är stigande eller ej
+function control(serie, serieMark) {
+    for (let i = 1; i < serie.length; i++) {
+        if (parseFloat(serie[i].innerHTML) > parseFloat(serie[i - 1].innerHTML)
+        ) {
+            serieMark.classList.add("check");
+        } else {
+            serieMark.classList.add("cross");
+            serieMark.classList.remove("check");
+            return;
+        }
+    }
+}
+/* -------------------------countCheckMarks------------------------------- */
+function countCheckMarks() {
+    for (let i = 0; i < markElems.length; i++) {
+        if (markElems[i].classList.contains("check")) {
+            totalPoints++;
+        }
+    }
+    msgElem.innerHTML = "Antalet rätta svar " + totalPoints;
+
+    allTotalPoints += totalPoints;
+    msgTotalPoints.innerHTML = allTotalPoints;
+}
+
 
 /* ---------------------dragEnd------------------------------- */
-
 //drag-and-drop avslutas
 function dragEnd(e) {
     for (let i = 0; i < dropElems.length; i++) {
@@ -146,16 +224,15 @@ function dragEnd(e) {
         dropElems[i].removeEventListener("dragleave", dropZone);
         dropElems[i].removeEventListener("drop", dropZone);
     }
-
-    msgElem.innerHTML = " Boxen dras inte längre ";
-    //console.log(dragEnd);
 }
 
 /* ---------------------endGame------------------------------- */
-
 //sluta spelet
 function endGame() {
     // Aktivera/inaktivera knappar
     newGameBtn.disabled = false;
     newTilesBtn.disabled = true;
+
+    gameCounter++;//räknare för antal spel
+    countGamesMsg.innerHTML = gameCounter;
 }//slut endGame
