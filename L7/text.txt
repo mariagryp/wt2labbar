@@ -1,13 +1,10 @@
 
-10. Antal korrekta serier (rader/kolumner) räknas och detta antal blir poäng, som skrivs ut under spelplanen.
-
-11. Poängen för en spelomgång ska adderas till totalpoängen. 
-
-12. En räknare för antal spel ska också räknas upp. Totalpoängen och räknaren ska visas i rutan i det övre högra hörnet.
-
 13. Både totalpoäng och räknaren för antal spel ska sparas i en variabel i localStorage eller i en cookie. Båda värdena ska sparas i samma variabel eller cookie. Dessa läses in då man öppnar sidan, så att de poäng och antal spel som man haft tidigare finns kvar, då man kommer tillbaks till sidan. 
 
 14. De ska då också skrivas ut på sidan.
 Då vi testar allas program kommer vi få många cookies eller variabler i localStorage, visserligen i olika domäner, men det är ändå bra om vi enkelt kan se vad de hör till. Ta därför med ditt användarid (för studentkontot) i namnet på cookien eller namnet på variabeln i localStorage, t.ex. ab223xyUserInfo.
 
 15.Då spelet är klart, ska knappen för nytt spel aktiveras igen, så att man kan spela en gång till. Då man sedan klickar på knappen för nytt spel, ska spelplanen återställas och meddelande från föregående spel tas bort. 
+
+
+mg224dfUserInfo

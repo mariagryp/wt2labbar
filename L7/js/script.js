@@ -12,14 +12,16 @@ var dropElems;// Array med referenser till element för "drop zones"
 var dragElems; // det element som dras 
 var tileElems;// referens till toma brickor
 let dragTile; // Elementet som användaren börjar dra
+let markElems;//array med mark elelemnter
 let dropCount = 0;// variabel för att kontollera antal släppta brickor
 let gameCounter = 0;// variabel för spel räknare 
-let markElems;//array med mark elelemnter
+let msgTotalPoints;//variabel för total poäng meddelande
 let countGamesMsg;//antal spel
 let tempAllNrs;// temporary array of allNrs
 let totalPoints = 0;// variabel för poäng
-let allTotalPoints = 0;
-let msgTotalPoints;
+let allTotalPoints = 0;//variabel för alla totala poäng i spelet
+let newTilesCount = 0;// räknare för antal nya brickor 
+
 
 /* ---------------------init------------------------------- */
 
@@ -46,6 +48,9 @@ function init() {
     // Aktivera/inaktivera knappar
     newGameBtn.disabled = false;
     newTilesBtn.disabled = true;
+
+    //anropar localStorage
+    getLocalStorage();
 }//slut init
 window.addEventListener("load", init); //init aktiveras då sidan är inladdad
 
@@ -79,7 +84,8 @@ function newGame() {
 
 //toma brickor fylls med slumpade nummer
 function newNumbers() {
-    //slumpar 4 siffror bland allNrs*/
+    newTilesCount = 4;// 4 tiles 
+    //slumpar 4 siffror bland tempAllNrs*/
     for (let i = 0; i < dragElems.length; i++) {
         let r = Math.floor(Math.random() * tempAllNrs.length);//
         let ix = tempAllNrs[r];//nytt nummer sparas i variabeln 
@@ -137,21 +143,18 @@ function dropZone(e) {
         } else {
             return;
         }
-        //Då alla nya brickor dragits till spelplanen, ska knappen för nya brickor aktiveras igen, så att man kan klicka fram fyra nya brickor.
-        for (let i = 0; i < dragElems.length; i++) {
-            if (dragElems[i].innerHTML == "") {
-                newTilesBtn.disabled = false; // on
-            } else {
-                newTilesBtn.disabled = true; // off
-            }
+        //knappen för nya brickor avaktiveras
+        newTilesCount--;
+        if (newTilesCount == 0) {
+            newTilesBtn.disabled = false;
         }
-        dropCount++;
-        console.log(dropCount);
         //räknare för antal droppar
+        dropCount++;
         if (dropCount == 16) {
             controlTilesSeries();
             countCheckMarks();
             endGame();
+            setLocalStorage();
         }
     }
 }
@@ -210,9 +213,10 @@ function countCheckMarks() {
     }
     msgElem.innerHTML = "Antalet rätta svar " + totalPoints;
 
+    //räknar ihop totala poängar och skriver ut dessa
     allTotalPoints += totalPoints;
     msgTotalPoints.innerHTML = allTotalPoints;
-}
+}//countCheckMarks
 
 
 /* ---------------------dragEnd------------------------------- */
@@ -220,11 +224,34 @@ function countCheckMarks() {
 function dragEnd(e) {
     for (let i = 0; i < dropElems.length; i++) {
         dropElems[i].removeEventListener("dragover", dropZone);
-        //dropZones[i].addEventListener("dragenter", handleDropZone);
         dropElems[i].removeEventListener("dragleave", dropZone);
         dropElems[i].removeEventListener("drop", dropZone);
     }
-}
+}//dragEnd
+
+/* ---------------------localStorage------------------------------- */
+//spara data i localStorage
+function setLocalStorage() {
+    let data = [gameCounter, allTotalPoints];//array med antal spel och total poäng
+    localStorage.setItem('mg224dfUserInfo', JSON.stringify(data));//sparar array i localStorage
+
+}//end setLocalStorage
+
+//överför data från localStorage
+function getLocalStorage() {
+    let data = localStorage.getItem('mg224dfUserInfo');
+    data = JSON.parse(data);
+
+    //kontrollerar om data finns från localstorage.Om den 
+    if (data != null) {
+        gameCounter = Number(data[0]);//konvertera data into numbers
+        allTotalPoints = Number(data[1]);//konvertera data into numbers
+    }
+
+    //skriver ut data 
+    msgTotalPoints.innerHTML = allTotalPoints;
+    countGamesMsg.innerHTML = gameCounter;
+}//end getLocalStorage
 
 /* ---------------------endGame------------------------------- */
 //sluta spelet
