@@ -156,7 +156,6 @@ function dropZone(e) {
             countCheckMarks();
             endGame();
             setLocalStorage();
-
         }
     }
 }
@@ -228,8 +227,8 @@ function setLocalStorage() {
 
 //överför data från localStorage
 function getLocalStorage() {
-    let data = localStorage.getItem('mg224dfUserInfo');
-    data = JSON.parse(data);
+    let data = localStorage.getItem('mg224dfUserInfo');//hämta data från localstorage
+    data = JSON.parse(data); // konvertera data i objekt
 
     //kontrollerar om data finns från localstorage.
     if (data != null) {
