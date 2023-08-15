@@ -36,6 +36,7 @@ function init() {
     /* dragBox = document.getElementById("newTiles").getElementsByClassName("empty"); */
     msgTotalPoints = document.getElementById("totPoints");//referens till elemenet för total antal poäng
     markElems = document.getElementById("board").getElementsByClassName("mark");
+
     /* ----------------Händelsehanterare---------- */
     for (let i = 0; i < dragElems.length; i++) {
         dragElems[i].addEventListener("dragstart", dragStart);
@@ -77,7 +78,6 @@ function newGame() {
         markElems[i].classList.remove("cross");
         markElems[i].classList.remove("check");
     }
-
 }//slut newGame()
 
 /* ---------------------newNumbers------------------------------- */
@@ -160,43 +160,20 @@ function dropZone(e) {
         }
     }
 }
+
 /* ---------------------controlTilesSeries------------------------------- */
 function controlTilesSeries() {
     let sClasses = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];// array med referens till rader och kolumnerna
     let sMarks = ['s1mark', 's2mark', 's3mark', 's4mark', 's5mark', 's6mark', 's7mark', 's8mark'];// array med referens till bock eller kryss 
 
-    let seriesArray = new Array(); // skapar ny tom array för serier
-    let marksArray = new Array();// skapar ny tom array för marks
+    let seriesArray = new Array(); // skapar en ny tom array för serier (raderna och kolumnerna)
+    let marksArray = new Array();// skapar en ny tom array för marks (bock eller kryss elementer)
 
 
     for (let i = 0; i < 8; i++) {
-        seriesArray.push(document.getElementsByClassName(sClasses[i]));//
-        marksArray.push(document.getElementById(sMarks[i]));//
+        seriesArray.push(document.getElementsByClassName(sClasses[i]));//referenser till en ny array med alla raderna och kolumnerna
+        marksArray.push(document.getElementById(sMarks[i]));//referenser till en ny array med bock eller kryss elementer
     }
-
-    console.log(seriesArray);
-    console.log(marksArray);
-
-    //referenser till raderna och kolumnerna
-    /* let s1 = document.getElementsByClassName("s1");//raderna
-    let s2 = document.getElementsByClassName("s2");//raderna
-    let s3 = document.getElementsByClassName("s3");//raderna
-    let s4 = document.getElementsByClassName("s4");//raderna
-    let s5 = document.getElementsByClassName("s5");//kolumnerna
-    let s6 = document.getElementsByClassName("s6");//kolumnerna
-    let s7 = document.getElementsByClassName("s7");//kolumnerna
-    let s8 = document.getElementsByClassName("s8");//kolumnerna
-
-    //referenser till bock eller kryss elementer
-    let s1mark = document.getElementById("s1mark");
-    let s2mark = document.getElementById("s2mark");
-    let s3mark = document.getElementById("s3mark");
-    let s4mark = document.getElementById("s4mark");
-    let s5mark = document.getElementById("s5mark");
-    let s6mark = document.getElementById("s6mark");
-    let s7mark = document.getElementById("s7mark");
-    let s8mark = document.getElementById("s8mark");
- */
 
     // anrop av funktion för att kontrollera serier med två parametrar: serieer och checkboxar.  
     for (let i = 0; i < 8; i++) {
@@ -207,7 +184,7 @@ function controlTilesSeries() {
 // Går igenom varje serie och tilldelar klass beroende om serie är stigande eller ej
 function control(s, sMark) {
     for (let i = 1; i < s.length; i++) {
-        if (parseFloat(s[i].innerHTML) > parseFloat(s[i - 1].innerHTML)
+        if (Number(s[i].innerHTML) > Number(s[i - 1].innerHTML) //värderna konverteras i Number och jämföras
         ) {
             sMark.classList.add("check");
         } else {
@@ -247,7 +224,6 @@ function dragEnd(e) {
 function setLocalStorage() {
     let data = [gameCounter, allTotalPoints];//array med antal spel och total poäng
     localStorage.setItem('mg224dfUserInfo', JSON.stringify(data));//sparar array i localStorage
-
 }//end setLocalStorage
 
 //överför data från localStorage
@@ -255,7 +231,7 @@ function getLocalStorage() {
     let data = localStorage.getItem('mg224dfUserInfo');
     data = JSON.parse(data);
 
-    //kontrollerar om data finns från localstorage.Om den 
+    //kontrollerar om data finns från localstorage.
     if (data != null) {
         gameCounter = Number(data[0]);//konvertera data into numbers
         allTotalPoints = Number(data[1]);//konvertera data into numbers
