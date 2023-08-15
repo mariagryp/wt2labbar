@@ -1,10 +1,164 @@
 
-13. Både totalpoäng och räknaren för antal spel ska sparas i en variabel i localStorage eller i en cookie. Båda värdena ska sparas i samma variabel eller cookie. Dessa läses in då man öppnar sidan, så att de poäng och antal spel som man haft tidigare finns kvar, då man kommer tillbaks till sidan. 
+Normalt flöde i spelet
+Följande punkter är obligatoriska för betyget G.
 
-14. De ska då också skrivas ut på sidan.
+1.Då man klickar på knappen för nytt spel, ska spelet initeras samt knappen för nytt spel inaktiveras och knappen för nya brickor aktiveras.
+
+2.Då man klickar på knappen för nya brickor, får man fyra nya brickor som väljs slumpmässigt bland brickorna 1-40. Samma nummer ska inte kunna väljas mer än en gång i en spelomgång. 
+
+3.De nya brickorna placeras i rutorna ovanför knappen. Klassen på dem ändras från empty till filled, så att de får en vit bakgrund. (Denna klass finns i CSS-koden.)
+
+4.Man kan sedan dra de nya brickorna till valfri tom ruta på spelplanen. Man drar en bricka i taget i valfri ordning.
+
+5.Man ska kunna släppa brickan över en tom plats i spelplanen. Medan man drar, ska den tomma plats man drar över markeras med en annan bakgrundsfärg.
+
+6. Då alla nya brickor dragits till spelplanen, ska knappen för nya brickor aktiveras igen, så att man kan klicka fram fyra nya brickor.
+Både i spelplanen och i rutorna för de fyra brickor man fått slumpmässigt ska två olika klasser användas:
+empty ska användas då rutan är tom.
+filled ska användas då rutan innehåller en bricka, dvs då den innehåller ett nummer.
+
+7. Då spelplanen är fylld ska alla rader och kolumner kontrolleras. Om det är en stigande serie, dvs numret i varje bricka är högre än numret i föregående bricka, ska det markeras med en grön bock till höger om raden eller under kolumnen. I annat fall ska det markeras med ett rött kryss.
+
+8.Detta ska göras genom att lägga in klassen check eller cross i rutan till höger om raden eller under kolumnen. I CSS-koden finns det för dessa klasser kod, som då lägger in en bock eller ett kryss.
+
+9.Antal korrekta serier (rader/kolumner) räknas och detta antal blir poäng, som skrivs ut under spelplanen.
+
+10.Poängen för en spelomgång ska adderas till totalpoängen. En räknare för antal spel ska också räknas upp. Totalpoängen och räknaren ska visas i rutan i det övre högra hörnet.
+
+11. Både totalpoäng och räknaren för antal spel ska sparas i en variabel i localStorage eller i en cookie. Båda värdena ska sparas i samma variabel eller cookie. Dessa läses in då man öppnar sidan, så att de poäng och antal spel som man haft tidigare finns kvar, då man kommer tillbaks till sidan. De ska då också skrivas ut på sidan.
+
 Då vi testar allas program kommer vi få många cookies eller variabler i localStorage, visserligen i olika domäner, men det är ändå bra om vi enkelt kan se vad de hör till. Ta därför med ditt användarid (för studentkontot) i namnet på cookien eller namnet på variabeln i localStorage, t.ex. ab223xyUserInfo.
 
-15.Då spelet är klart, ska knappen för nytt spel aktiveras igen, så att man kan spela en gång till. Då man sedan klickar på knappen för nytt spel, ska spelplanen återställas och meddelande från föregående spel tas bort. 
-
+12. Då spelet är klart, ska knappen för nytt spel aktiveras igen, så att man kan spela en gång till. Då man sedan klickar på knappen för nytt spel, ska spelplanen återställas och meddelande från föregående spel tas bort.
 
 mg224dfUserInfo
+
+
+// get all divs with the specified classes
+const divs = document.querySelectorAll('.class1, .class2, .class3');
+
+// create an array to store the div content
+const arr = [];
+
+// loop through the divs and add their content to the array
+divs.forEach(div => arr.push(div.innerHTML));
+This code selects all divs with the classes "class1", "class2", and "class3", and then adds the content of each div to an array.
+
+how to loop through this array and sort in ascending order
+AI
+Sure, here is one way to loop through the array and sort it in ascending order:
+
+// Assuming you have already created and populated the 'arr' array
+
+// Sort the array in ascending order
+arr.sort(function(a, b) {
+  return a - b;
+});
+
+// Loop through the sorted array and display each element
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+This sorts the array using the sort() method, which takes a sorting function as an argument. In this case, we're comparing the values in the array using the - operator, which works for numbers. If you're sorting an array of strings or other types of data, you'll need to use a different comparison function.
+
+After sorting the array, we use a for loop to loop through each element in the array and display it. You can replace the console.log() statement with whatever code you need to process each element.
+
+
+
+Hi! How can I help you?
+Guest:
+javascript Brickans nummer ska läggas in som innehåll i elementen för rutorna. När spelplanen är full och brickorna ska jämföras, för att se om man har en stigande serie, kan du då lätt få fram brickornas nummer.
+AI:
+Hej! För att lägga till brickans nummer i rutan kan du använda JavaScript-funktionen textContent. När du skapar en ny bricka, lägg till dess nummer på följande sätt:
+
+let bricka = document.createElement("div");
+bricka.textContent = nummer; // Här ersätter du "nummer" med det faktiska numret för den här brickan
+För att jämföra brickornas nummer kan du använda en loop för att samla in alla nummer från spelplanen och sedan jämföra dem. Något i stil med detta:
+
+let brickor = document.querySelectorAll(".bricka");
+let nummer = [];
+
+// Loppa igenom varje bricka och lägg till dess nummer i en array
+brickor.forEach(function(bricka) {
+  nummer.push(parseInt(bricka.textContent)); // Vi använder parseInt för att konvertera texten till ett nummer
+});
+
+// Sortera arrayen med nummer och jämför sedan om de är i stigande ordning
+let i = 0;
+while (i < nummer.length - 1
+Guest:
+vad kan jag använda istaället för querySelectorAll?
+AI:
+Istället för querySelectorAll kan du använda getElementsByClassName för att hämta en kollektion av element baserat på deras klassnamn.
+
+Till exempel, om du vill hämta alla element med klassnamnet "bricka", kan du använda följande kod:
+
+let brickor = document.getElementsByClassName("bricka");
+Detta kommer att returnera en HTMLCollection av alla element med klassnamnet "bricka". Notera dock att HTMLCollection är en live-kollektion, vilket innebär att den uppdateras automatiskt om det finns förändringar i DOM-trädet. Detta kan påverka prestandan om du har många element.
+
+how can I select a collection with different classnames without using querySelector?
+AI:
+If you want to select a collection of elements with different class names without using querySelector, you can use getElementsByClassName method.
+
+For example, if you want to select all elements with class "bricka" and "ruta", you can use the following code:
+
+let brickorOchRutor = [...document.getElementsByClassName("bricka"), ...document.getElementsByClassName("ruta")];
+This will return an array of all elements with class "bricka" and "ruta". The spread operator ... is used to merge the two collections.
+
+Note that getElementsByClassName returns a live collection, which means that it's automatically updated if there are changes to the DOM tree. If you don't want this behavior, you can convert the collection to an array using Array.from() or the spread operator ....
+
+
+
+javascript Brickans nummer ska läggas in som innehåll i elementen för rutorna. När spelplanen är full och brickorna ska jämföras, för att se om man har en stigande serie, kan du då lätt få fram brickornas nummer.
+AI:
+Hej! Visst kan jag hjälpa till med det! För att lägga till brickornas nummer som innehåll i rutorna i spelplanen kan du använda JavaScript-funktionen "innerHTML". Här är en enkel kodsnutt som visar hur du kan göra det:
+
+// Här skapar vi en array med 12 slumpmässiga nummer
+var brickor = [2, 8, 5, 3, 1, 7, 4, 9, 6, 10, 11, 12];
+
+// Här hämtar vi alla rutor på spelplanen
+var rutor = document.querySelectorAll('.ruta');
+
+// Här loopar vi igenom alla rutor och tilldelar dem numret på motsvarande bricka
+for (var i = 0; i < rutor.length; i++) {
+  rutor[i].innerHTML = brickor[i];
+}
+När det gäller att jämföra brickornas nummer för att se om de bildar en stigande serie kan du också använda JavaScript. Här är en enkel kodsnutt som visar hur du kan göra det:
+
+// Här skapar vi en array med 12 nummer som ska jämföras
+var brickor = [2, 8, 5, 3, 1, 7, 4, 9, 6, 10, 11, 12];
+
+// Här sorterar vi arrayen i stigande ordning
+brickor.sort(function(a, b) {
+  return a - b;
+});
+
+// Här loopar vi igenom arrayen och kontrollerar om varje nummer är större än det föregående
+var stigandeSerie = true;
+for (var i = 1; i < brickor.length; i++) {
+  if (brickor[i] <= brickor[i-1]) {
+    stigandeSerie = false;
+    break;
+  }
+}
+
+// Här visar vi resultatet av kontrollen
+if (stigandeSerie) {
+  console.log('Brickorna bildar en stigande serie!');
+} else {
+  console.log('Brickorna bildar inte en stigande serie.');
+}
+
+User:
+vad kan jag använda istället för document.querySelectorAll('.ruta'); och hämta kollektion med olika class names
+AI:
+Om du vill hämta en kollektion av element med olika klassnamn kan du använda document.getElementsByClassName()-metoden. Till skillnad från document.querySelectorAll(), som tar en CSS-selektor som argument, tar document.getElementsByClassName() en eller flera klassnamn som argument. Här är ett exempel på hur du kan använda det:
+
+// Här hämtar vi kollektionen av element med klassnamnen "ruta1", "ruta2" och "ruta3"
+var rutor = document.getElementsByClassName('ruta1', 'ruta2', 'ruta3');
+
+// Här loopar vi igenom kollektionen och tilldelar dem numret på motsvarande bricka
+for (var i = 0; i < rutor.length; i++) {
+  rutor[i].innerHTML = brickor[i];
+}
+I detta exempel hämtar vi alla element med klassnamnen "ruta1", "ruta2" och "ruta3" och tilldelar dem numret på motsvarande bricka. Hoppas detta hjälper dig!

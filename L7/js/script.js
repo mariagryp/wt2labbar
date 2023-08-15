@@ -119,6 +119,7 @@ function dragStart(e) {
 //funktion som kopplat till de toma rutorna(dropzones). Brickan kan släppas här
 function dropZone(e) {
     e.preventDefault();
+    let dropNr = e.dataTransfer.getData("text");
     //om ruttan är tom markeras den med annan bakgrundsfärg annars ingen bakrunsdfärg
     if (e.type == "dragover") {
         if (this.innerHTML == "") {
@@ -132,7 +133,7 @@ function dropZone(e) {
     } else if (e.type == "drop") {
         if (this.innerHTML == "") {
             this.style.backgroundColor = "";
-            this.innerHTML = e.dataTransfer.getData("text");
+            this.innerHTML = dropNr;
             this.classList.remove("empty");
             this.classList.add("filled");
             //ändra färger på den element som drogs när den är i drop zone
@@ -155,13 +156,29 @@ function dropZone(e) {
             countCheckMarks();
             endGame();
             setLocalStorage();
+
         }
     }
 }
 /* ---------------------controlTilesSeries------------------------------- */
 function controlTilesSeries() {
+    let sClasses = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];// array med referens till rader och kolumnerna
+    let sMarks = ['s1mark', 's2mark', 's3mark', 's4mark', 's5mark', 's6mark', 's7mark', 's8mark'];// array med referens till bock eller kryss 
+
+    let seriesArray = new Array(); // skapar ny tom array för serier
+    let marksArray = new Array();// skapar ny tom array för marks
+
+
+    for (let i = 0; i < 8; i++) {
+        seriesArray.push(document.getElementsByClassName(sClasses[i]));//
+        marksArray.push(document.getElementById(sMarks[i]));//
+    }
+
+    console.log(seriesArray);
+    console.log(marksArray);
+
     //referenser till raderna och kolumnerna
-    let s1 = document.getElementsByClassName("s1");//raderna
+    /* let s1 = document.getElementsByClassName("s1");//raderna
     let s2 = document.getElementsByClassName("s2");//raderna
     let s3 = document.getElementsByClassName("s3");//raderna
     let s4 = document.getElementsByClassName("s4");//raderna
@@ -179,27 +196,23 @@ function controlTilesSeries() {
     let s6mark = document.getElementById("s6mark");
     let s7mark = document.getElementById("s7mark");
     let s8mark = document.getElementById("s8mark");
+ */
 
-    //anropar funktion för att kontroller serier 
-    control(s1, s1mark);
-    control(s2, s2mark);
-    control(s3, s3mark);
-    control(s4, s4mark);
-    control(s5, s5mark);
-    control(s6, s6mark);
-    control(s7, s7mark);
-    control(s8, s8mark);
+    // anrop av funktion för att kontrollera serier med två parametrar: serieer och checkboxar.  
+    for (let i = 0; i < 8; i++) {
+        control(seriesArray[i], marksArray[i]);
+    }
 }
 
 // Går igenom varje serie och tilldelar klass beroende om serie är stigande eller ej
-function control(serie, serieMark) {
-    for (let i = 1; i < serie.length; i++) {
-        if (parseFloat(serie[i].innerHTML) > parseFloat(serie[i - 1].innerHTML)
+function control(s, sMark) {
+    for (let i = 1; i < s.length; i++) {
+        if (parseFloat(s[i].innerHTML) > parseFloat(s[i - 1].innerHTML)
         ) {
-            serieMark.classList.add("check");
+            sMark.classList.add("check");
         } else {
-            serieMark.classList.add("cross");
-            serieMark.classList.remove("check");
+            sMark.classList.add("cross");
+            sMark.classList.remove("check");
             return;
         }
     }
